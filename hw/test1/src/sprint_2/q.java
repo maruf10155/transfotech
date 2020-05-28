@@ -1,5 +1,6 @@
 package sprint_2;
 
+
 class q{
     public static void main(String args[]){
         sum(4,7,1000,-78,74);
@@ -8,7 +9,7 @@ class q{
         sum(a);
 
     }
-    static void sum(double... x){
+    static void sum(double ... x){
         System.out.println(x.length);
         double s=0;
         if (x.length==0) {
