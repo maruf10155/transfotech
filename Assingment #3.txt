@@ -1,0 +1,19 @@
+Amazon.com
+
+1. 3 functionalities = 3 classes = 6 tests =priority/groups/dependsOnMethods/enabled
+e.g login = login with valid, invalid, valid& invalid, invalid & invalid, no credentials, 
+
+2. Testng xml file - methods include/exclude - run by groups 
+
+3. Testng index.html report - fail/pass (why???)
+
+4. In separate class = Invoke browser/load url/maximize/delete all cookies/ page load time out + close browser
+	
+Copy/paste=
+
+driver.get("url");
+driver.manage().window().maximize();
+driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+driver.manage().deleteAllCookies();
+	

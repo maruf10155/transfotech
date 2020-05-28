@@ -1,0 +1,176 @@
+#######TestNG Basics concept######################
+
+1. TestNg - itself acts as Java compiler so no need main method
+2. Execution happens with TestNG annotations - @Test (test cases)
+3. More than one @Test - is taken as next test cases - Multiple test      cases can be written in single class.
+4. Right click on project - convert to TestNg - testng.xml file can be    created - xml hirerchy - Test Suite>Test Folder(Shell)>Test Cases
+5. TestNG xml file - helps to run multiple test cases in multiple    classes as a suite instead of running them class by class
+6. Classes can be categorized in different Test name group in xml file    to separately run then or run whole as a suite
+
+##############Exclude/Include#####################
+
+7. Exclude/Include specific Test method:
+	a.  To exclude specific test methods for not to execute
+	    < class name="">
+	    	<methods>
+			<exclude name=""/>
+		</methods>
+	    </class>
+	b. To include specific test methods to execute
+	     <class name="">
+		<methods>
+			<include name=""/>
+		</methods>
+	     </class>
+
+8. If there is too much to include/exclude - writing scripts in xml       becomes tedious in above formate (No. 7) - to avoid that naming        convention of test cases can be used to include/exclude using        regular expression name.*
+	    <class name="">
+	    	<methods>
+			<exclude name="startsWith.*"/>
+		</methods>
+	    </class>
+	- all the test cases that starts with that specific name           within that specific class will be excluded (included if 	  include tagname is used)
+
+9. xml file can also be created in package level if there are multiple    pacakges within the project
+	<test name="">
+		<packages>
+			<package name="">
+		</packages>
+	</test>
+
+################Annotations###################
+
+10. Pre-requisite annotation: @Before
+11. Post-requisite annotations: @After
+12. Scope of @Before & @After is within test folder only, no matter     there is another test folder or not
+13. @BeforeSuite & @AfterSuite - executes before the all the test     within the suite starts and after the all the test executes is     completed within the suite, no matter how many test folder is     present
+14. @BeforeMethod - scope is within the class it is specified and will     execute before every test within the specific class
+15. @BeforeTest - scope is within the test in xml file and will     execute before test method
+16. @BeforeClass - scope is with the class and execute before     executing any test within the class
+17. @AfterClass - scope is with the class and execute after executing     all the test within the class
+
+###############Grouping#######################
+
+19. @Test(groups={"Smoke"}) - test methods with the name comes under     Smoke test group - execution can be done via xml file with tagname 
+	<test name="">
+	  <groups>
+	     <run>
+		<include name="Smoke">
+	     </run>
+	  </groups>
+		<classes>
+			<class name=""/>
+		</classes>
+	</test>
+	
+
+##############Prioritization##################
+
+18. @Test - gets executed according to alphabetical order of the test     name
+TestNG Helper atrribute
+19. dependsOnMethod={"test name"} - if one test has dependecy on         another or if you want to execute one test before another
+    if more dependecy - dependsOnMethod={"test name","test name"} 
+20. to escape test case - (enabled=false)
+	to run it back (enabled=true)
+21. if you are aware certain test takes longer than global timeout -     we can use - (timeout=3000)
+
+###############Parametrization#################
+
+22. can also be achieved from xml file
+	- can mentioned under suite name in centralized way
+	<suite name="">
+		<paramter name="URL" value="google.com"/>
+	   and in test class we need to do -	
+		@Parameters({"URL"})
+		@Test
+		public void test(String urlname)
+	//urlname get value from URL, and it comes from xml file
+		{
+		   driver.get(urlname))
+		}
+	- can also be menioned under test name for that specifice test  	  groups only
+	- not just single parameter, but multiple paramters can be           mentioned
+		@Parameters({"",""})
+23. @DataProvider - if parameters at test level or methods level and       multiple datas then passing parameters in xml file is too much
+	@DataProvider
+	public object[][] getData()
+	{
+		//1 data combination -username/password
+		//2 data combination -username/password
+		//3 data combination -username/password
+		Object[][] data=new Object[3][2]; //2D array
+		data[0][0]="";
+		data[0][1]=""; //like this, fill array
+	return data;
+	}
+	@Test(dataProvider="getData")
+	publiv void test(String username, String password)
+	{
+	system.out.println(username);
+	system.out.println(password);
+	}
+
+###############TestNG Listeners###############################
+
+24. to detect test case failure and take screenshot of the failure or     invokes particular method
+25. ITestListener interface which impplements TestNG listeners
+	public class Listerners implements ITestListener{
+	-will create various methods like if pass/if fail
+	e.g
+	@Override
+	public void onTestFailure(ITestResult result){
+	System.out.println(result.getName());// will show which test 						failed
+	}
+	}
+	- in xml file location of listener's class needs to be 	specified
+	<suite name="">
+		<listeners>
+			<listener class-name=""/>
+		</listerners>
+
+#############Parallel execution###########################
+26. not very suggestable if there is multiple test cases, which can     slow down the performance of test execution
+27. If you want to run test folder parallel -
+	<suite name="" parallel="tests" thread-count="2">
+	// thread-count="2" - will let 2 test folder run parallely
+28. if you want to run classes parallel -
+	<test name="" parallel="classes" thread-count="2">
+29. Selenium Grid - is more suggestive for parallel execution than     TestNG XML
+
+#############Test Result###########################
+30. Refresh the project after execution, open the test output folder     will have TestNG report in html formate as index.html file
+
+######Pull Global Environmental variables into test###########
+31. create config.properties file - define global variables
+32. Properties prop=new Properties(); // object of properties class
+    FileInputStream file=new FileInputStream("Path of .properties");
+	// to read value from .properties file
+	prop.load(file); // to load .properties into prop
+	prop.getProperty("name of the value from . properties");
+    FileOutputStream fos=new FileOutputStream("Path of .properties");
+	// to write/update value in .properties file
+	prop.getProperty("browser","firefox"); //change from chrome
+	prop.store(fos,null);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
